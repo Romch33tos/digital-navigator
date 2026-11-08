@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DebtScreen({ debt }) {
   const navigate = useNavigate();
+  const [openIndex, setOpenIndex] = useState(null);
 
   const container = {
     hidden: { opacity: 0 },
@@ -17,6 +19,10 @@ export default function DebtScreen({ debt }) {
   const item = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
+  };
+
+  const toggle = (index) => {
+    setOpenIndex((current) => (current === index ? null : index));
   };
 
   return (
@@ -75,9 +81,49 @@ export default function DebtScreen({ debt }) {
         )}
       </div>
 
+      {debt.faq && debt.faq.length > 0 && (
+        <>
+          <h2 className="section-heading">Частые вопросы</h2>
+          <div className="faq-list">
+            {debt.faq.map((item, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <div key={index} className="faq-item">
+                  <button
+                    type="button"
+                    className="faq-question"
+                    onClick={() => toggle(index)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="faq-question-text">{item.q}</span>
+                    <span className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"} aria-hidden="true">
+                      ▾
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="answer"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="faq-answer-wrap"
+                      >
+                        <p className="faq-answer">{item.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
       <button
         type="button"
-        className="btn btn-back"
+        className="btn btn-back mt-4"
         onClick={() => navigate("/")}
       >
         ← Назад
