@@ -10,44 +10,27 @@ import FaqScreen from "./components/FaqScreen.jsx";
 import Loader from "./components/Loader.jsx";
 import ErrorScreen from "./components/ErrorScreen.jsx";
 import PageTransition from "./components/PageTransition.jsx";
+import data from "./data.json";
 
 export default function App() {
-  const [data, setData] = useState(null);
+  const [appData, setAppData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    let cancelled = false;
-    fetch("/src/data.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("network");
-        }
-        return res.json();
-      })
-      .then((json) => {
-        if (!cancelled) {
-          setData(json);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError(true);
-          setLoading(false);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
+    if (data) {
+      setAppData(data);
+    } else {
+      setAppData(null);
+    }
+    setLoading(false);
   }, []);
 
   if (loading) {
     return <Loader />;
   }
 
-  if (error || !data) {
+  if (!appData) {
     return <ErrorScreen />;
   }
 
@@ -69,7 +52,7 @@ export default function App() {
               path="/debt"
               element={
                 <PageTransition>
-                  <DebtScreen debt={data.debt} />
+                  <DebtScreen debt={appData.debt} />
                 </PageTransition>
               }
             />
@@ -77,7 +60,7 @@ export default function App() {
               path="/reference"
               element={
                 <PageTransition>
-                  <ReferenceScreen reference={data.reference} />
+                  <ReferenceScreen reference={appData.reference} />
                 </PageTransition>
               }
             />
@@ -85,7 +68,7 @@ export default function App() {
               path="/reference/:slug"
               element={
                 <PageTransition>
-                  <ReferenceDetailScreen reference={data.reference} />
+                  <ReferenceDetailScreen reference={appData.reference} />
                 </PageTransition>
               }
             />
@@ -93,7 +76,7 @@ export default function App() {
               path="/faq"
               element={
                 <PageTransition>
-                  <FaqScreen faq={data.faq} />
+                  <FaqScreen faq={appData.faq} />
                 </PageTransition>
               }
             />
