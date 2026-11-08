@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DebtScreen({ debt }) {
   const navigate = useNavigate();
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq((current) => (current === index ? null : index));
+  };
 
   const container = {
     hidden: { opacity: 0 },
@@ -67,13 +73,58 @@ export default function DebtScreen({ debt }) {
         </div>
 
         {debt.referenceInfo && (
-          <div className="info-row mt-3">
-            <span className="info-label" style={{ fontSize: "14px", color: "var(--accent)" }}>
-              {debt.referenceInfo}
-            </span>
+          <div className="reference-info-block mt-3">
+            <span className="info-label reference-info-label">Справки с места обучения выдаются:</span>
+            <div className="reference-info-details">
+              <span>{debt.referenceInfo.days}</span>
+              <span>{debt.referenceInfo.time}</span>
+            </div>
           </div>
         )}
       </div>
+
+      {debt.faq && debt.faq.length > 0 && (
+        <>
+          <h2 className="section-heading mt-4">Частые вопросы</h2>
+          <div className="faq-list">
+            {debt.faq.map((item, index) => {
+              const isOpen = openFaq === index;
+              return (
+                <div key={index} className="faq-item">
+                  <button
+                    type="button"
+                    className="faq-question"
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="faq-question-text">{item.q}</span>
+                    <span
+                      className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"}
+                      aria-hidden="true"
+                    >
+                      ▾
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="answer"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="faq-answer-wrap"
+                      >
+                        <p className="faq-answer">{item.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       <button
         type="button"
