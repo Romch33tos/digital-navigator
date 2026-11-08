@@ -71,16 +71,6 @@ export default function DebtScreen({ debt }) {
             </tbody>
           </table>
         </div>
-
-        {debt.referenceInfo && (
-          <div className="reference-info-block mt-3">
-            <span className="info-label reference-info-label">Справки с места обучения выдаются:</span>
-            <div className="reference-info-details">
-              <span>{debt.referenceInfo.days}</span>
-              <span>{debt.referenceInfo.time}</span>
-            </div>
-          </div>
-        )}
       </div>
 
       {debt.faq && debt.faq.length > 0 && (
