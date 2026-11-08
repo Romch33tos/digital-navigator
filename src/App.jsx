@@ -5,6 +5,7 @@ import Header from "./components/Header.jsx";
 import HomeScreen from "./components/HomeScreen.jsx";
 import DebtScreen from "./components/DebtScreen.jsx";
 import ReferenceScreen from "./components/ReferenceScreen.jsx";
+import ReferenceDetailScreen from "./components/ReferenceDetailScreen.jsx";
 import FaqScreen from "./components/FaqScreen.jsx";
 import Loader from "./components/Loader.jsx";
 import ErrorScreen from "./components/ErrorScreen.jsx";
@@ -77,6 +78,14 @@ export default function App() {
               element={
                 <PageTransition>
                   <ReferenceScreen reference={data.reference} />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/reference/:slug"
+              element={
+                <PageTransition>
+                  <ReferenceDetailScreen reference={data.reference} />
                 </PageTransition>
               }
             />
