@@ -37,14 +37,48 @@ export default function ReferenceDetailScreen({ reference }) {
       >
         <span className="reference-cabinet">Кабинет {ref.cabinet}</span>
         <h1 className="screen-title">{ref.fullTitle}</h1>
-        <p className="screen-subtitle">{ref.intro}</p>
+        
+        <div className="reference-intro">
+          {ref.intro.map((paragraph, index) => (
+            <p key={index} className="screen-subtitle">
+              {paragraph}
+            </p>
+          ))}
+        </div>
       </motion.div>
 
+      {ref.services && ref.services.length > 0 && (
+        <motion.div
+          className="services-list"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
+        >
+          <h2 className="section-heading">Чем помогают</h2>
+          {ref.services.map((service, index) => (
+            <div key={index} className="service-card">
+              <h3 className="service-title">{service.title}</h3>
+              <p className="service-text">{service.text}</p>
+              {service.link && (
+                <a 
+                  href={service.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="service-link"
+                >
+                  Перейти к форме →
+                </a>
+              )}
+            </div>
+          ))}
+        </motion.div>
+      )}
+
       <motion.section
-        className="info-block"
+        className="info-block mt-4"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
+        transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
       >
         <span className="info-label schedule-title">График работы</span>
         <table className="schedule-table">
@@ -69,10 +103,10 @@ export default function ReferenceDetailScreen({ reference }) {
       </motion.section>
 
       <motion.h2
-        className="section-heading"
+        className="section-heading mt-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.3 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
       >
         Частые вопросы
       </motion.h2>
@@ -81,7 +115,7 @@ export default function ReferenceDetailScreen({ reference }) {
         className="faq-list"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
+        transition={{ duration: 0.3, delay: 0.2, ease: "easeOut" }}
       >
         {ref.faq.map((qa, index) => {
           const isOpen = openIndex === index;
