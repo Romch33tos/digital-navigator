@@ -19,17 +19,6 @@ export default function ReferenceDetailScreen({ reference }) {
 
   return (
     <div className="screen">
-      <motion.button
-        type="button"
-        className="btn btn-back btn-back-top"
-        onClick={() => navigate("/reference")}
-        initial={{ opacity: 0, x: -8 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-      >
-        ← Все справки
-      </motion.button>
-
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -155,6 +144,17 @@ export default function ReferenceDetailScreen({ reference }) {
           );
         })}
       </motion.div>
+
+      <motion.button
+        type="button"
+        className="btn btn-back mt-4"
+        onClick={() => navigate("/reference")}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.25 }}
+      >
+        ← Все справки
+      </motion.button>
     </div>
   );
 }
