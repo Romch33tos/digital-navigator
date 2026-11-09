@@ -310,6 +310,60 @@ a:hover {
   right: 18px;
 }
 
+.reference-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.reference-intro .screen-subtitle {
+  margin: 0;
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.service-card {
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.service-title {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.service-text {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: var(--text-weak);
+}
+
+.service-link {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.service-link:hover {
+  text-decoration-color: var(--accent);
+}
+
 .faq-list {
   display: flex;
   flex-direction: column;
