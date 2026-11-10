@@ -118,7 +118,7 @@ export default function DebtScreen({ debt }) {
 
       <button
         type="button"
-        className="btn btn-back"
+        className="btn btn-back mt-4"
         onClick={() => navigate("/")}
       >
         ← Назад
