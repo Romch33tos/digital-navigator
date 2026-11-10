@@ -29,7 +29,7 @@ export default function DebtScreen({ debt }) {
     <div className="screen">
       <h1 className="screen-title">Академическая задолженность</h1>
       <p className="screen-subtitle">
-        Пройдите шаги по порядку — так задолженность закроется без лишних визитов.
+        Пройдите шаги по порядку – так задолженность закроется без лишних визитов.
       </p>
 
       <motion.ol
