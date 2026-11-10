@@ -24,7 +24,7 @@ export default function ReferenceDetailScreen({ reference }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
-        <span className="reference-cabinet">Кабинет {ref.cabinet}</span>
+        <span className="reference-cabinet">{ref.cabinet}</span>
         <h1 className="screen-title">{ref.fullTitle}</h1>
         
         <div className="reference-intro">
@@ -43,7 +43,7 @@ export default function ReferenceDetailScreen({ reference }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
         >
-          <h2 className="section-heading">Чем помогают</h2>
+          <h2 className="section-heading">{slug === "union" ? "Направления работы" : "Чем помогают"}</h2>
           {ref.services.map((service, index) => (
             <div key={index} className="service-card">
               <h3 className="service-title">{service.title}</h3>
@@ -55,12 +55,39 @@ export default function ReferenceDetailScreen({ reference }) {
                   rel="noopener noreferrer" 
                   className="service-link"
                 >
-                  Перейти к форме →
+                  Перейти →
                 </a>
               )}
             </div>
           ))}
         </motion.div>
+      )}
+
+      {ref.otherDepartments && ref.otherDepartments.length > 0 && (
+        <motion.section
+          className="info-block mt-4"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.08, ease: "easeOut" }}
+        >
+          <span className="info-label schedule-title">Другие популярные кафедры</span>
+          <table className="schedule-table">
+            <thead>
+              <tr>
+                <th scope="col">Кафедра</th>
+                <th scope="col">Кабинет</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ref.otherDepartments.map((dept) => (
+                <tr key={dept.cabinet}>
+                  <td>{dept.title}</td>
+                  <td>{dept.cabinet}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.section>
       )}
 
       <motion.section
