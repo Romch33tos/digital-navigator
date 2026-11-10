@@ -121,6 +121,7 @@ a:hover {
   flex-direction: column;
   gap: 6px;
   padding: 20px;
+  height: 100%;
   min-height: 64px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -243,6 +244,9 @@ a:hover {
 
 .reference-card {
   padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
@@ -278,6 +282,7 @@ a:hover {
 .reference-note {
   margin: 0;
   font-size: 15px;
+  flex-grow: 1;
 }
 
 .reference-card-link {
@@ -476,13 +481,6 @@ a:hover {
   color: var(--accent-hover);
 }
 
-.btn-back-top {
-  margin-bottom: 16px;
-  min-height: 44px;
-  padding: 8px 16px;
-  font-size: 14px;
-}
-
 .section-heading {
   margin: 8px 0 12px;
   font-size: 20px;
@@ -596,6 +594,7 @@ a:hover {
   .reference-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
   }
 }
 
@@ -608,4 +607,4 @@ a:hover {
   .reference-list {
     grid-template-columns: repeat(3, 1fr);
   }
-}
+}Ы
