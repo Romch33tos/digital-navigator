@@ -43,7 +43,7 @@ export default function ReferenceDetailScreen({ reference }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
         >
-          <h2 className="section-heading">{slug === "union" ? "Направления работы" : "Чем помогают"}</h2>
+          <h2 className="section-heading">{slug === "union" ? "Направления работы" : "Чем вам могут помочь"}</h2>
           {ref.services.map((service, index) => (
             <div key={index} className="service-card">
               <h3 className="service-title">{service.title}</h3>
