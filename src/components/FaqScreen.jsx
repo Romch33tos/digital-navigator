@@ -54,7 +54,7 @@ export default function FaqScreen({ faq }) {
 
       <button
         type="button"
-        className="btn btn-back"
+        className="btn btn-back mt-4"
         onClick={() => navigate("/")}
       >
         ← Назад
