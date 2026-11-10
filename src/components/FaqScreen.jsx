@@ -14,7 +14,7 @@ export default function FaqScreen({ faq }) {
     <div className="screen">
       <h1 className="screen-title">Частые вопросы</h1>
       <p className="screen-subtitle">
-        Нажмите на вопрос, чтобы увидеть ответ.
+        Нажмите на вопрос, чтобы посмотреть ответ.
       </p>
 
       <div className="faq-list">
