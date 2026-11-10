@@ -21,7 +21,7 @@ export default function ReferenceScreen({ reference }) {
     <div className="screen">
       <h1 className="screen-title">Справки</h1>
       <p className="screen-subtitle">
-        Выберите направление — покажем часы приёма и ответы на частые вопросы.
+        Выберите направление – покажем часы приёма и ответы на частые вопросы.
       </p>
 
       <motion.div
