@@ -22,9 +22,9 @@ const cards = [
 export default function HomeScreen() {
   return (
     <div className="home">
-      <h1 className="home-title">Куда вам нужно?</h1>
+      <h1 className="home-title">Чем мы можем вам помочь?</h1>
       <p className="home-subtitle">
-        Выберите ситуацию — навигатор покажет маршрут и кабинеты.
+        Выберите ситуацию – навигатор объяснит, как действовать.
       </p>
       <div className="home-cards">
         {cards.map((card) => (
