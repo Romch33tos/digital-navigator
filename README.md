@@ -20,3 +20,6 @@
     <img src="https://img.shields.io/badge/Открыть_сайт-Цифровой_навигатор-0EA5A4?style=for-the-badge&logo=github&logoColor=white" alt="Открыть сайт">
   </a>
 </p>
+<p align="center">
+  <img width="317" height="321" alt="image" src="https://github.com/user-attachments/assets/0dcaa4b8-e55e-4e79-b510-7242c40c221a" />
+</p>
