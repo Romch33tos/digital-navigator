@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { MetrikaCounter } from "react-metrika";
 import Header from "./components/Header.jsx";
 import HomeScreen from "./components/HomeScreen.jsx";
 import DebtScreen from "./components/DebtScreen.jsx";
@@ -11,6 +12,8 @@ import Loader from "./components/Loader.jsx";
 import ErrorScreen from "./components/ErrorScreen.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import data from "./data.json";
+
+const METRIKA_ID = 114360014;
 
 export default function App() {
   const [appData, setAppData] = useState(null);
@@ -84,6 +87,17 @@ export default function App() {
           </Routes>
         </AnimatePresence>
       </main>
+
+      <MetrikaCounter
+        id={METRIKA_ID}
+        options={{
+          trackHash: true,
+          webvisor: true,
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true
+        }}
+      />
     </>
   );
 }
