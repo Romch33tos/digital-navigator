@@ -1,13 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ym } from "react-metrika";
+
+const METRIKA_ID = 114360014;
 
 export default function FaqScreen({ faq }) {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (index) => {
+    if (openIndex !== index) {
+      ym(METRIKA_ID, "reachGoal", "faq_open");
+    }
     setOpenIndex((current) => (current === index ? null : index));
+  };
+
+  const openChat = () => {
+    ym(METRIKA_ID, "reachGoal", "CHAT_OPEN_FROM_FAQ");
+    window.dispatchEvent(new CustomEvent("open-chatbot"));
   };
 
   return (
@@ -29,7 +40,10 @@ export default function FaqScreen({ faq }) {
                 aria-expanded={isOpen}
               >
                 <span className="faq-question-text">{item.q}</span>
-                <span className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"} aria-hidden="true">
+                <span
+                  className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"}
+                  aria-hidden="true"
+                >
                   ▾
                 </span>
               </button>
@@ -52,10 +66,37 @@ export default function FaqScreen({ faq }) {
         })}
       </div>
 
+      <div
+        style={{
+          marginTop: 24,
+          padding: 20,
+          background: "var(--surface)",
+          border: "1px dashed var(--teal)",
+          borderRadius: "var(--radius-card)",
+          textAlign: "center",
+          boxShadow: "var(--shadow-card)",
+        }}
+      >
+        <p style={{ margin: "0 0 12px", color: "var(--text-weak)", fontSize: 15 }}>
+          Не нашли ответ на свой вопрос?
+        </p>
+        <button
+          type="button"
+          onClick={openChat}
+          className="btn btn-primary"
+          style={{ minHeight: 48 }}
+        >
+          Спросить чат-бота
+        </button>
+      </div>
+
       <button
         type="button"
         className="btn btn-back mt-4"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          ym(METRIKA_ID, "reachGoal", "back_click");
+          navigate("/");
+        }}
       >
         ← Назад
       </button>
