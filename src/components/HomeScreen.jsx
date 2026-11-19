@@ -1,21 +1,27 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ym } from "react-metrika";
+
+const METRIKA_ID = 114360014;
 
 const cards = [
   {
     to: "/debt",
     title: "У меня академическая задолженность",
-    description: "Пошаговый маршрут закрытия долга и контакты дирекции."
+    description: "Пошаговый маршрут закрытия долга и контакты дирекции.",
+    goal: "debt_click"
   },
   {
     to: "/reference",
     title: "Мне нужна справка",
-    description: "Кабинеты, часы приёма и что взять с собой."
+    description: "Кабинеты, часы приёма и что взять с собой.",
+    goal: "reference_click"
   },
   {
     to: "/faq",
     title: "Частые вопросы",
-    description: "Быстрые ответы на типовые ситуации студентов."
+    description: "Быстрые ответы на типовые ситуации студентов.",
+    goal: "faq_click"
   }
 ];
 
@@ -34,7 +40,11 @@ export default function HomeScreen() {
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            <Link to={card.to} className="card-link">
+            <Link
+              to={card.to}
+              className="card-link"
+              onClick={() => ym(METRIKA_ID, "reachGoal", card.goal)}
+            >
               <span className="card-title">{card.title}</span>
               <span className="card-description">{card.description}</span>
               <span className="card-arrow" aria-hidden="true">→</span>
