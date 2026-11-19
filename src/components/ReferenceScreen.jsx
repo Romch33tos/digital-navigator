@@ -1,5 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ym } from "react-metrika";
+
+const METRIKA_ID = 114360014;
 
 const listVariants = {
   hidden: { opacity: 0 },
@@ -40,6 +43,7 @@ export default function ReferenceScreen({ reference }) {
             <Link
               to={`/reference/${ref.slug}`}
               className="reference-card reference-card-link"
+              onClick={() => ym(METRIKA_ID, "reachGoal", "ref_card_click")}
             >
               <div className="reference-head">
                 <span className="reference-cabinet">
@@ -57,7 +61,10 @@ export default function ReferenceScreen({ reference }) {
       <button
         type="button"
         className="btn btn-back"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          ym(METRIKA_ID, "reachGoal", "back_click");
+          navigate("/");
+        }}
       >
         ← Назад
       </button>
