@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ym } from "react-metrika";
+
+const METRIKA_ID = 114360014;
 
 export default function FaqScreen({ faq }) {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (index) => {
+    if (openIndex !== index) {
+      ym(METRIKA_ID, "reachGoal", "faq_open");
+    }
     setOpenIndex((current) => (current === index ? null : index));
   };
 
@@ -29,7 +35,10 @@ export default function FaqScreen({ faq }) {
                 aria-expanded={isOpen}
               >
                 <span className="faq-question-text">{item.q}</span>
-                <span className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"} aria-hidden="true">
+                <span
+                  className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"}
+                  aria-hidden="true"
+                >
                   ▾
                 </span>
               </button>
@@ -55,7 +64,10 @@ export default function FaqScreen({ faq }) {
       <button
         type="button"
         className="btn btn-back mt-4"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          ym(METRIKA_ID, "reachGoal", "back_click");
+          navigate("/");
+        }}
       >
         ← Назад
       </button>
