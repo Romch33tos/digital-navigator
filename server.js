@@ -1,9 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import GigaChat from 'gigachat';
 import { Agent } from 'node:https';
 import fs from 'fs';
 import 'dotenv/config';
+import { GigaChat } from 'langchain-gigachat';
+import { HuggingFaceTransformersEmbeddings } from '@langchain/community/embeddings/huggingface_transformers';
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 
 const app = express();
 app.use(cors());
@@ -13,22 +16,40 @@ const httpsAgent = new Agent({
   rejectUnauthorized: false,
 });
 
-const client = new GigaChat({
-  timeout: 600,
+const credentials = process.env.GIGACHAT_AUTH_KEY;
+
+const llm = new GigaChat({
+  credentials: credentials,
   model: 'GigaChat-2',
-  credentials: process.env.GIGACHAT_AUTH_KEY,
   scope: 'GIGACHAT_API_PERS',
   httpsAgent,
+  temperature: 0.3,
 });
 
-let knowledgeBase = "";
-try {
-  knowledgeBase = fs.readFileSync('FAQ.txt', 'utf-8');
-} catch (e) {
-  console.log("Внимание: файл FAQ.txt не найден!");
+const embeddings = new HuggingFaceTransformersEmbeddings({
+  model: 'Xenova/all-MiniLM-L6-v2',
+});
+
+let vectorStore = null;
+
+async function initRAG() {
+  try {
+    const knowledgeBase = fs.readFileSync('FAQ.txt', 'utf-8');
+    const splitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 800,
+      chunkOverlap: 100,
+    });
+    const chunks = await splitter.createDocuments([knowledgeBase]);
+    
+    console.log(`Создано ${chunks.length} чанков. Построение индекса (локальная модель HuggingFace)...`);
+    vectorStore = await MemoryVectorStore.fromDocuments(chunks, embeddings);
+    console.log('RAG индекс успешно построен.');
+  } catch (e) {
+    console.error('Ошибка при инициализации RAG:', e);
+  }
 }
 
-const chunks = knowledgeBase.split('\n\n').filter(c => c.trim().length > 0);
+initRAG();
 
 app.post('/api/chat', async (req, res) => {
   const { question } = req.body;
@@ -37,40 +58,26 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ answer: 'Не понял вопрос. Попробуйте переформулировать.' });
   }
 
-  const questionWords = question.toLowerCase().split(' ');
-  let bestChunk = "";
-  let maxMatches = 0;
-
-  chunks.forEach(chunk => {
-    const chunkLower = chunk.toLowerCase();
-    let matches = 0;
-    questionWords.forEach(word => {
-      if (word.length > 3 && chunkLower.includes(word)) matches++;
-    });
-    if (matches > maxMatches) {
-      maxMatches = matches;
-      bestChunk = chunk;
-    }
-  });
-
-  const context = bestChunk || "Информация не найдена в базе знаний.";
+  if (!vectorStore) {
+    return res.status(503).json({ answer: 'База знаний еще загружается. Попробуйте через минуту.' });
+  }
 
   try {
-    const completion = await client.chat({
-      messages: [
-        {
-          role: 'system',
-          content: `Ты — помощник студента. Отвечай на вопрос, используя ТОЛЬКО этот контекст: "${context}". Если ответа нет в контексте, вежливо скажи, что не знаешь. Отвечай кратко и по делу.`
-        },
-        { role: 'user', content: question }
-      ],
-      temperature: 0.3,
-    });
+    const relevantDocs = await vectorStore.similaritySearch(question, 3);
+    const context = relevantDocs.map(doc => doc.pageContent).join('\n\n---\n\n');
 
-    res.json({ answer: completion.choices[0]?.message.content || 'Не удалось получить ответ.' });
+    const completion = await llm.invoke([
+      {
+        role: 'system',
+        content: `Ты — помощник студента. Отвечай на вопрос, используя ТОЛЬКО этот контекст:\n\n${context}\n\nЕсли ответа нет в контексте, вежливо скажи, что не знаешь. Отвечай кратко и по делу.`
+      },
+      { role: 'user', content: question }
+    ]);
+
+    res.json({ answer: completion.content || 'Не удалось получить ответ.' });
   } catch (error) {
     console.error('GigaChat API Error:', error);
-    res.status(500).json({ error: 'Ошибка при запросе к GigaChat' });
+    res.status(500).json({ answer: 'Ошибка при запросе к GigaChat. Проверьте подключение.' });
   }
 });
 
