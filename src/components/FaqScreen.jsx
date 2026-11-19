@@ -16,6 +16,11 @@ export default function FaqScreen({ faq }) {
     setOpenIndex((current) => (current === index ? null : index));
   };
 
+  const openChat = () => {
+    ym(METRIKA_ID, "reachGoal", "CHAT_OPEN_FROM_FAQ");
+    window.dispatchEvent(new CustomEvent("open-chatbot"));
+  };
+
   return (
     <div className="screen">
       <h1 className="screen-title">Частые вопросы</h1>
@@ -59,6 +64,30 @@ export default function FaqScreen({ faq }) {
             </div>
           );
         })}
+      </div>
+
+      <div
+        style={{
+          marginTop: 24,
+          padding: 20,
+          background: "var(--surface)",
+          border: "1px dashed var(--teal)",
+          borderRadius: "var(--radius-card)",
+          textAlign: "center",
+          boxShadow: "var(--shadow-card)",
+        }}
+      >
+        <p style={{ margin: "0 0 12px", color: "var(--text-weak)", fontSize: 15 }}>
+          Не нашли ответ на свой вопрос?
+        </p>
+        <button
+          type="button"
+          onClick={openChat}
+          className="btn btn-primary"
+          style={{ minHeight: 48 }}
+        >
+          Спросить чат-бота
+        </button>
       </div>
 
       <button
