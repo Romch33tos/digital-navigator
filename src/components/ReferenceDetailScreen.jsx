@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ym } from "react-metrika";
 import NotFound from "./NotFound.jsx";
+
+const METRIKA_ID = 114360014;
 
 export default function ReferenceDetailScreen({ reference }) {
   const { slug } = useParams();
@@ -14,6 +17,9 @@ export default function ReferenceDetailScreen({ reference }) {
   }
 
   const toggle = (index) => {
+    if (openIndex !== index) {
+      ym(METRIKA_ID, "reachGoal", "faq_open");
+    }
     setOpenIndex((current) => (current === index ? null : index));
   };
 
@@ -26,7 +32,7 @@ export default function ReferenceDetailScreen({ reference }) {
       >
         <span className="reference-cabinet">{ref.cabinet}</span>
         <h1 className="screen-title">{ref.fullTitle}</h1>
-        
+
         <div className="reference-intro">
           {ref.intro.map((paragraph, index) => (
             <p key={index} className="screen-subtitle">
@@ -43,17 +49,20 @@ export default function ReferenceDetailScreen({ reference }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
         >
-          <h2 className="section-heading">{slug === "union" ? "Направления работы" : "Чем вам могут помочь"}</h2>
+          <h2 className="section-heading">
+            {slug === "union" ? "Направления работы" : "Чем вам могут помочь"}
+          </h2>
           {ref.services.map((service, index) => (
             <div key={index} className="service-card">
               <h3 className="service-title">{service.title}</h3>
               <p className="service-text">{service.text}</p>
               {service.link && (
-                <a 
-                  href={service.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={service.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="service-link"
+                  onClick={() => ym(METRIKA_ID, "reachGoal", "ref_service_click")}
                 >
                   Перейти →
                 </a>
@@ -175,7 +184,10 @@ export default function ReferenceDetailScreen({ reference }) {
       <motion.button
         type="button"
         className="btn btn-back mt-4"
-        onClick={() => navigate("/reference")}
+        onClick={() => {
+          ym(METRIKA_ID, "reachGoal", "back_click");
+          navigate("/reference");
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.25 }}
