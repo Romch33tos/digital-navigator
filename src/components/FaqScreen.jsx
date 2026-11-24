@@ -66,26 +66,23 @@ export default function FaqScreen({ faq }) {
         })}
       </div>
 
-      <div
-        style={{
-          marginTop: 24,
-          padding: 20,
-          background: "var(--surface)",
-          border: "1px dashed var(--teal)",
-          borderRadius: "var(--radius-card)",
-          textAlign: "center",
-          boxShadow: "var(--shadow-card)",
-        }}
-      >
-        <p style={{ margin: "0 0 12px", color: "var(--text-weak)", fontSize: 15 }}>
-          Не нашли ответ на свой вопрос?
+      <div className="faq-cta">
+        <p className="faq-cta-text">Не нашли ответ на свой вопрос?</p>
+        <p className="faq-cta-hint">
+          Наш чат-бот ответит за пару секунд — попробуйте!
         </p>
         <button
           type="button"
           onClick={openChat}
-          className="btn btn-primary"
-          style={{ minHeight: 48 }}
+          className="faq-cta-btn"
         >
+          <span className="faq-cta-btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              <line x1="9" y1="10" x2="15" y2="10" />
+              <line x1="9" y1="14" x2="13" y2="14" />
+            </svg>
+          </span>
           Спросить чат-бота
         </button>
       </div>
