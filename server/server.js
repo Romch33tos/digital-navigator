@@ -41,7 +41,7 @@ const embeddings = new HuggingFaceTransformersEmbeddings({
 });
 
 const systemPromptTemplate = fs.readFileSync(
-  path.join(__dirname, 'prompts', 'system.txt'),
+  path.join(__dirname, '..', 'prompts', 'system.txt'),
   'utf-8'
 );
 
