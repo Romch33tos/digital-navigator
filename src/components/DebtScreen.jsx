@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ym } from "react-metrika";
+
+const METRIKA_ID = 114360014;
 
 export default function DebtScreen({ debt }) {
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
 
   const toggleFaq = (index) => {
+    if (openFaq !== index) {
+      ym(METRIKA_ID, "reachGoal", "debt_faq_open");
+    }
     setOpenFaq((current) => (current === index ? null : index));
   };
 
@@ -51,7 +57,7 @@ export default function DebtScreen({ debt }) {
           <span className="info-label">Кабинет дирекции</span>
           <span className="info-value">{debt.cabinet}</span>
         </div>
-        
+
         <div className="schedule-container">
           <span className="info-label schedule-title">График работы дирекции</span>
           <table className="schedule-table">
@@ -77,7 +83,7 @@ export default function DebtScreen({ debt }) {
         <>
           <h2 className="section-heading mt-4">Частые вопросы</h2>
           <div className="faq-list">
-            {debt.faq.map((item, index) => {
+            {debt.faq.map((faqItem, index) => {
               const isOpen = openFaq === index;
               return (
                 <div key={index} className="faq-item">
@@ -87,7 +93,7 @@ export default function DebtScreen({ debt }) {
                     onClick={() => toggleFaq(index)}
                     aria-expanded={isOpen}
                   >
-                    <span className="faq-question-text">{item.q}</span>
+                    <span className="faq-question-text">{faqItem.q}</span>
                     <span
                       className={isOpen ? "faq-chevron faq-chevron-open" : "faq-chevron"}
                       aria-hidden="true"
@@ -105,7 +111,7 @@ export default function DebtScreen({ debt }) {
                         transition={{ duration: 0.25, ease: "easeOut" }}
                         className="faq-answer-wrap"
                       >
-                        <p className="faq-answer">{item.a}</p>
+                        <p className="faq-answer">{faqItem.a}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -119,7 +125,10 @@ export default function DebtScreen({ debt }) {
       <button
         type="button"
         className="btn btn-back mt-4"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          ym(METRIKA_ID, "reachGoal", "back_click");
+          navigate("/");
+        }}
       >
         ← Назад
       </button>
